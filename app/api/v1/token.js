@@ -6,6 +6,7 @@ const {User}=require('../../models/user')
 const {generateToken}=require('../../../core/util')
 const {Success}=require('../../../core/http-exception')
 const {Auth} =require('../../../middlewares/auth')
+const {WXManager}=require('../../services/ws')
 const router = new Router({
 })
 
@@ -17,7 +18,8 @@ router.post('/v1/token',async (ctx,next)=>{
       token= await emialLogin(v.get("body.account"),v.get("body.secret"))
       break;
     case LoginType.USER_MINI_PROGRAM:
-
+      
+      token= await WXManager.codeToToken(v.get('body.account'))
       break;
     default:
       break;
