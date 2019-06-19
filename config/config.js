@@ -13,5 +13,10 @@ module.exports={
   security:{
     secretKey:"cainiaodjm",
     expiresIn:60*60
+  },
+  wx:{
+    appID:'wxfe8525810bdf490f',
+    appSecret:'31d9eb4961bc722f5f6508bf1396d763',
+    loginUrl:'https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code'
   }
 }
