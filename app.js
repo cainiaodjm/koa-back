@@ -11,7 +11,7 @@ app.use(catchError)
 InitManager.initCore(app)
 
 
-app.listen(8080,()=>{
-  console.log('监听------8080')
+app.listen(3000,()=>{
+  console.log('监听------3000')
 })
  
