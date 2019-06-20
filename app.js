@@ -22,7 +22,7 @@ const option={
   key:fs.readFileSync('./config/https/2212554_www.cainiaodjm.top.key'),
   cert:fs.readFileSync('./config/https/2212554_www.cainiaodjm.top.pem')
 }
-// http.createServer(app.callback()).listen(17000);
+http.createServer(app.callback()).listen(17100);
 https.createServer(option, app.callback()).listen(17000);
 
 

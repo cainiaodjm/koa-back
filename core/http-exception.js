@@ -32,12 +32,20 @@ class AuthFaild extends HttpException{
   }
 }
 class Success extends HttpException{
-  constructor(errorMessage,errorCode,data){
+  constructor(errorMessage,errorCode,result){
     super()
     this.code=200
-    this.data=data || {}
+    this.result=result || {}
     this.errorMessage=errorMessage||'ok'
     this.errorCode=errorCode||0
+  }
+}
+class Repeat extends HttpException{
+  constructor(errorMessage,errorCode){
+    super()
+    this.errorMessage=errorMessage|| "重复操作"
+    this.errorCode=errorCode || 10006
+    this.code=403
   }
 }
 class Forbbiden extends HttpException{
@@ -54,5 +62,6 @@ module.exports={
   Success,
   NotFound,
   AuthFaild,
-  Forbbiden
+  Forbbiden,
+  Repeat
 }

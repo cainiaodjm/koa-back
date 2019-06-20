@@ -16,8 +16,8 @@ const catchError =async (ctx,next)=>{
         err_code:error.errorCode,
         request :`${ctx.method} ${ctx.path}`
       }
-      if(error.data){
-        json.data=error.data
+      if(error.result){
+        json.result=error.result
       }
       ctx.body=json
       

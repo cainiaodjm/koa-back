@@ -15,6 +15,14 @@ const LoginType={
   USER_MOBILE:102,
   isThisType
 }
+const ArtType={
+  Movie:100,
+  Music:200,
+  Sentence:300,
+  Book:400,
+  isThisType
+}
 module.exports ={
-  LoginType
+  LoginType,
+  ArtType
 }

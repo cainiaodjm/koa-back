@@ -1,11 +1,23 @@
 const {LinValidator,Rule} =require('../../core/lin-validator')
 const {User}=require('../models/user')
-const {LoginType}=require('../lib/enum')
+const {LoginType,ArtType}=require('../lib/enum')
 class PositiveIntegerValidator extends LinValidator{
   constructor(){
     super()
     this.id=[
       new Rule('isInt','需要的是正整数',{min:1})
+    ]
+  }
+}
+class UserValidator extends LinValidator{
+  constructor(){
+    super()
+    this.email=[
+      new Rule('isEmail','不符合email规范')
+    ]
+    this.nickname=[
+      new Rule('optional'),
+      new Rule('isLength','昵称不符合长度规范',{min:6,max:32})
     ]
   }
 }
@@ -76,8 +88,73 @@ class TokenValidator extends LinValidator{
     
   }
 }
+class NotEmptyValidator extends LinValidator{
+  constructor(){
+    super()
+    this.token=[
+      new Rule('isLength','不允许为空',{min:1})
+    ]
+  }
+}
+class BookValidator extends LinValidator{
+  constructor(){
+    super()
+    this.title=[
+      new Rule('isLength','不允许为空',{min:1})
+    ]
+    this.content=[
+      new Rule('isLength','不允许为空',{min:1})
+    ]
+    this.author=[
+      new Rule('isLength','不允许为空',{min:1})
+    ]
+    this.nationality=[
+      new Rule('isInt','需要的是正整数',{min:1})
+    ],
+    this.press_name=[
+      new Rule('isLength','不允许为空',{min:1})
+    ]
+    this.press_date=[
+      new Rule('isLength','不允许为空',{min:1})
+    ],
+    this.page_count=[
+      new Rule('isInt','需要的是正整数',{min:1})
+    ],
+    this.price=[
+      new Rule('matches','价格参数不符合','^(\\-|\\+)?\\d+(\\.\\d+)?$')
+    ]
+    this.paperback=[
+      new Rule('isInt','需要的是正整数',{min:1})
+    ]
+
+  }
+}
+class FlowValidator extends LinValidator{
+  constructor(){
+    super()
+    this.type_id=[
+      new Rule('isInt','需要的是正整数',{min:1})
+    ]
+    this.type=[
+      new Rule('isInt','需要的是正整数',{min:1})
+    ]
+  }
+  validateArtType(vals){
+    if(!vals.body.type){
+      throw new Error('缺少type字段')
+    }
+    if(!ArtType.isThisType(vals.body.type)){
+      throw new Error('type参数不合法')
+    }
+
+  }
+}
 module.exports={
   PositiveIntegerValidator,
   RegisterValidator,
-  TokenValidator
+  TokenValidator,
+  UserValidator,
+  NotEmptyValidator,
+  BookValidator,
+  FlowValidator
 }

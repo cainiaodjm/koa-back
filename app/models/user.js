@@ -18,6 +18,21 @@ class User extends Model{
     }
     return user
   }
+  static async getUserByEmail(email){
+    const user =await User.findOne({
+      where:{
+        email:email
+      }
+    })
+    return user
+  }
+  static async getUserByParams(params){
+    
+    const user =await User.findOne({
+      where:params
+    })
+    return user
+  }
   static async getUserByOpenId(openid){
     const user=await User.findOne({
       where:{
