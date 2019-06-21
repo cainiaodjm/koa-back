@@ -34,6 +34,7 @@ class Auth{
         errMsg="权限不足"
         throw new  Forbbiden(errMsg)
       }
+      console.log(decode)
       ctx.auth={
         uid:decode.uid,
         scope:decode.scope

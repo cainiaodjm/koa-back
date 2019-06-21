@@ -48,22 +48,9 @@ class Flow extends Model{
   }
 }
 Flow.init({
-  id:{
-    type:Sequelize.INTEGER,
-    primaryKey:true,
-    autoIncrement:true
-  },
-  type_id:{
-    type:Sequelize.INTEGER
-  },
-  type:{
-    type:Sequelize.INTEGER
-  },
-  fav_nums:{
-    type:Sequelize.INTEGER,
-    defaultValue:0
-  },
-
+  index:Sequelize.INTEGER,
+  art_id:Sequelize.INTEGER,
+  type:Sequelize.INTEGER,
 },{
   sequelize,
   tableName:'tb_flow',

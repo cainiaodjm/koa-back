@@ -27,7 +27,6 @@ router.post('/v1/token',async (ctx,next)=>{
       token= await emialLogin(v.get("body.account"),v.get("body.secret"))
       break;
     case LoginType.USER_MINI_PROGRAM:
-      
       token= await WXManager.codeToToken(v.get('body.account'))
       break;
     default:

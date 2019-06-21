@@ -129,10 +129,10 @@ class BookValidator extends LinValidator{
 
   }
 }
-class FlowValidator extends LinValidator{
+class LikeValidator extends LinValidator{
   constructor(){
     super()
-    this.type_id=[
+    this.art_id=[
       new Rule('isInt','需要的是正整数',{min:1})
     ]
     this.type=[
@@ -140,10 +140,11 @@ class FlowValidator extends LinValidator{
     ]
   }
   validateArtType(vals){
-    if(!vals.body.type){
+    let type=vals.body.type || vals.path.type
+    if(!type){
       throw new Error('缺少type字段')
     }
-    if(!ArtType.isThisType(vals.body.type)){
+    if(!ArtType.isThisType(type)){
       throw new Error('type参数不合法')
     }
 
@@ -156,5 +157,5 @@ module.exports={
   UserValidator,
   NotEmptyValidator,
   BookValidator,
-  FlowValidator
+  LikeValidator
 }

@@ -39,7 +39,6 @@ router.post('/',async (ctx,next)=>{
   }
 
   const _book=await Book.create(book)
-  console.log(_book)
   const flow={
     "type_id":_book.id,
     "type":_book.type,
@@ -51,5 +50,12 @@ router.post('/',async (ctx,next)=>{
   })
   
 })
+//获取热门书籍(概要)
+router.get('/hot_list',async(ctx,next)=>{
+  let books=await Book.findAll({
+  })
+  ctx.body=books
+})
+
 
 module.exports=router

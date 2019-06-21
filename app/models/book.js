@@ -1,6 +1,7 @@
 const {sequelize}=require('../../core/db')
 const {Sequelize,Model}=require('sequelize')
 const {NotFound,AuthFaild}=require('../../core/http-exception')
+const {Flow} =require('./flow')
 class Book extends Model{
 
 }
@@ -54,4 +55,6 @@ Book.init({
   sequelize,
   tableName:'tb_book',
 })
+Book.belongsTo(Flow,{foreignKey:'type_id'})
+
 module.exports={Book}

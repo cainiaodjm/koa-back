@@ -1,4 +1,5 @@
 const Sequelize =require('sequelize')
+
 const {
   dbName,
   host,
@@ -14,15 +15,27 @@ const sequelize=new Sequelize(dbName,user,password,{
     timezone:'+08:00',
     define:{
       paranoid: true,
-      createdAt: "create_at",
+      createdAt: "created_at",
       // I want updatedAt to actually be called updateTimestamp
-      updatedAt: 'update_at',
+      updatedAt: 'updated_at',
     
       // And deletedAt to be called destroyTime (remember to enable paranoid for this to work)
       deletedAt: 'deleted_at',
+      scopes:{
+        bh:{
+          attributes:{
+            exclude:[
+              'updated_at',
+              'deleted_at',
+              'created_at'
+            ]
+          }
+        }
+      }
     }
   }
 )
+
 sequelize.sync();
 module.exports ={
   sequelize

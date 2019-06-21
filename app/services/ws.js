@@ -31,10 +31,8 @@ class WXManager {
       user = await User.registerByOpenId(result.data.openid)
     }
 
-
-
     //获取到用户之后 返回权限token
-    return generateToken(user.uid, Auth.USER)
+    return generateToken(user.id, Auth.USER)
 
   }
 }
