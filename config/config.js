@@ -18,5 +18,9 @@ module.exports={
     appID:'wxfe8525810bdf490f',
     appSecret:'31d9eb4961bc722f5f6508bf1396d763',
     loginUrl:'https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code'
-  }
+  },
+  yushu:{
+    detailUrl:'http://t.yushu.im/v2/book/id/%s',
+    keywordUrl:'http://t.yushu.im/v2/book/search?q=%s&count=%s&start=%s&summary=%s'
+},
 }

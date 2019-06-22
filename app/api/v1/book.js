@@ -1,14 +1,25 @@
 const  bcrypt=require('bcryptjs')
 const Router = require('koa-router')
 
-const {RegisterValidator,UserValidator,BookValidator}=require('../../validators/validator')
+const {RegisterValidator,UserValidator,BookValidator,PositiveIntegerValidator}=require('../../validators/validator')
 const {Book}= require('../../models/book')
+const {HotBook}=require('../../models/hot_book')
 const {Flow}=require('../../models/flow')
 const {Success,NotFound}=require('../../../core/http-exception')
 const router = new Router({
   prefix:'/v1/book'
 })
 
+router.get('/:id/detail',async (ctx,next)=>{
+  const v= await new PositiveIntegerValidator().validate(ctx)
+  let id=v.get('path.id')
+  let book=await new Book(id).detail()
+  ctx.body=book
+
+})
+router.get('/hot_list',async (ctx,next)=>{
+  ctx.body=await HotBook.getAll()
+})
 //添加书籍
 router.post('/',async (ctx,next)=>{ 
   const v=await new BookValidator().validate(ctx)

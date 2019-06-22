@@ -21,6 +21,9 @@ router.get('/latest', new Auth().m, async (ctx, next) => {
   art.setDataValue('like_status', isUserLike ? '1' : "0")
   ctx.body = art
 })
+/**
+ * 获取下一期期刊
+ */
 router.get('/:index/next', new Auth().m, async (ctx, next) => {
   const v = await new PositiveIntegerValidator().validate(ctx, {
     id: 'index'
@@ -42,6 +45,9 @@ router.get('/:index/next', new Auth().m, async (ctx, next) => {
   ctx.body = art
 
 })
+/**
+ * 获取上一期 期刊
+ */
 router.get('/:index/previous', new Auth().m, async (ctx, next) => {
   const v = await new PositiveIntegerValidator().validate(ctx, {
     id: 'index'
@@ -63,6 +69,30 @@ router.get('/:index/previous', new Auth().m, async (ctx, next) => {
   ctx.body = art
 
 })
+/**
+ * 获取某一期的详细信息
+ */
+router.get('/:type/:id',new Auth().m,async (ctx,next)=>{
+  const v = await new LikeValidator().validate(ctx, {
+    art_id: "id"
+  })
+  const uid = ctx.auth.uid
+  const id = v.get('path.id')
+  const type = v.get('path.type')
+
+
+  const art = await Art.getData(id, type)
+  if (!art) {
+    throw new NotFound('资源未找到')
+  }
+  const isUserLike = await Favor.isUserLike(id, type, uid)
+  art.setDataValue('like_status',isUserLike ? 1 : 0)
+  ctx.body = art
+
+})
+/**
+ * 获取点赞信息
+ */
 router.get('/:type/:id/favor', new Auth().m, async (ctx, next) => {
   const v = await new LikeValidator().validate(ctx, {
     art_id: "id"
@@ -90,7 +120,10 @@ router.get('/:type/:id/favor', new Auth().m, async (ctx, next) => {
 router.get('/favor', new Auth().m, async (ctx, next) => {
   const uid = ctx.auth.uid
   const arts=await Favor.getMyClassicFavors(uid)
-  ctx.body=arts
+  const res=await Art.getList(arts)
+
+  
+  ctx.body=res
 
 })
 module.exports = router
