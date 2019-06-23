@@ -6,10 +6,10 @@ const {Favor}=require('./favor')
 const {NotFound,AuthFaild}=require('../../core/http-exception')
 const config=require('../../config/config')
 class Book extends Model{
-  constructor(id){
-    super()
-    this.id=id
-  }
+  // constructor(id){
+  //   super()
+  //   this.id=id
+  // }
   
   async detail (id){
     const url=util.format(config.yushu.detailUrl,this.id)

@@ -3,11 +3,13 @@ const Router = require('koa-router')
 
 const {RegisterValidator,UserValidator,
   BookValidator,PositiveIntegerValidator,
-  SearchValidator
+  SearchValidator,
+  CommentValidator
 }=require('../../validators/validator')
 const {Book}= require('../../models/book')
 const {HotBook}=require('../../models/hot_book')
 const {Flow}=require('../../models/flow')
+const {BookComment}=require('../../models/book_comment')
 const {Success,NotFound}=require('../../../core/http-exception')
 const {Auth}=require('../../../middlewares/auth')
 const router = new Router({
@@ -98,8 +100,12 @@ router.get('/hot_list',async(ctx,next)=>{
   ctx.body=books
 })
 //增加短评
-router.post('/add/short_comment',new Auth().m,(ctx,next)=>{
-  
+router.post('/add/short_comment',new Auth().m,async (ctx,next)=>{
+  const v=await new CommentValidator().validate(ctx)
+  const res= await BookComment.addComment(v.get('body.book_id'),v.get('body.content'))
+  throw new Success('添加短评成功',0,{
+    data:res
+  })
 })
 
 module.exports=router

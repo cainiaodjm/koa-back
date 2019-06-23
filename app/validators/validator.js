@@ -130,6 +130,17 @@ class BookValidator extends LinValidator{
 
   }
 }
+class CommentValidator extends LinValidator{
+  constructor(){
+    super()
+    this.content=[
+      new Rule('isLength','短评字数不符合规范',{min:6,max:24})
+    ]
+    this.book_id=[
+      new Rule('isInt','book_id参数不合法',{min:1})
+    ]
+  }
+}
 class SearchValidator extends LinValidator{
   constructor(){
     super()
@@ -173,5 +184,6 @@ module.exports={
   NotEmptyValidator,
   BookValidator,
   LikeValidator,
-  SearchValidator
+  SearchValidator,
+  CommentValidator
 }

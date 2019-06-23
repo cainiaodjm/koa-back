@@ -1,10 +1,15 @@
 const Koa=require('koa')
 const parser = require('koa-bodyparser')
-const InitManager=require('./core/init')
+const static=require('koa-static')
+const fs=require('fs')
+const path=require('path')
 const https=require('https')
 const http=require('http')
-const fs=require('fs')
+const InitManager=require('./core/init')
+
+
 const catchError =require('./middlewares/exception')
+
 
 const enforceHttps = require('koa-sslify');
 
@@ -13,7 +18,7 @@ const app=new Koa()
 app.use(parser())
 app.use(logging)
 app.use(catchError)
-
+app.use(static(path.join(__dirname,'./static')))
 InitManager.initCore(app)
 
 // app.use(enforceHttps());
