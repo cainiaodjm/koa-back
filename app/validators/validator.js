@@ -5,7 +5,8 @@ class PositiveIntegerValidator extends LinValidator{
   constructor(){
     super()
     this.id=[
-      new Rule('isInt','需要的是正整数',{min:1})
+      new Rule('isInt','需要的是正整数',{min:1}),
+     
     ]
   }
 }
@@ -129,6 +130,20 @@ class BookValidator extends LinValidator{
 
   }
 }
+class SearchValidator extends LinValidator{
+  constructor(){
+    super()
+    this.q=[new Rule('isLength','查询条件不能为空',{min:1})]
+    this.start=[
+      new Rule('isInt','start不符合规范',{min:0, max:60000}),
+      new Rule('optional','',0),
+    ]
+    this.count=[
+      new Rule('isInt','start不符合规范',{min:1,max:20}),
+      new Rule('optional','',20),
+    ]
+  }
+}
 class LikeValidator extends LinValidator{
   constructor(){
     super()
@@ -157,5 +172,6 @@ module.exports={
   UserValidator,
   NotEmptyValidator,
   BookValidator,
-  LikeValidator
+  LikeValidator,
+  SearchValidator
 }
