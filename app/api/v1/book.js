@@ -49,7 +49,10 @@ router.get('/favor/count',new Auth().m, async(ctx,next)=>{
   })
 })
 router.get('/hot_list',async (ctx,next)=>{
-  ctx.body=await HotBook.getAll()
+  const books =await HotBook.getAll()
+  throw new Success('查询成功',0,{
+    data:books
+  })
 })
 
 //添加书籍
