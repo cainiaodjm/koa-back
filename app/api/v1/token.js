@@ -15,7 +15,7 @@ router.post('/v1/token/verify',async(ctx,next)=>{
   console.log(v.get('body.token'))
   const result= Auth.verifyToken(v.get('body.token'))
   throw new Success('验证成功',0,{
-    data:result
+    is_verify:result
   })
 })
 router.post('/v1/token',async (ctx,next)=>{ 

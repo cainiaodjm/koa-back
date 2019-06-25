@@ -19,7 +19,7 @@ const router = new Router({
 router.get('/:id/detail', async (ctx, next) => {
   const v = await new PositiveIntegerValidator().validate(ctx)
   let id = v.get('path.id')
-  let book = await new Book(id).detail()
+  let book = await new Book().detail(id)
   throw new Success("查询成功", 0, {
     data: book
   })
@@ -34,7 +34,7 @@ router.get('/search', async (ctx, next) => {
 router.get('/hot_keyword', async (ctx, next) => {
   let hoeKeyword = {
     "hot": [
-      "Fluent Python",
+      "春上村树",
       "Python",
       "小程序Java核心编程",
       "慕课网7七月",

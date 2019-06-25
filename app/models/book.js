@@ -12,7 +12,7 @@ class Book extends Model{
   // }
   
   async detail (id){
-    const url=util.format(config.yushu.detailUrl,this.id)
+    const url=util.format(config.yushu.detailUrl,id)
     const detail=await axios.get(url)
     return detail.data
   }
