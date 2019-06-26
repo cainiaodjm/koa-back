@@ -5,7 +5,8 @@ class BookComment extends Model{
     const bookComments=await BookComment.findAll({
       where:{
         book_id:bookId
-      }
+      },
+      order:[['nums','DESC']]
     })
     if(bookComments){
       return bookComments
