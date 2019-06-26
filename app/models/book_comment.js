@@ -1,6 +1,18 @@
 const {sequelize}=require('../../core/db')
 const {Sequelize,Model}=require('sequelize')
 class BookComment extends Model{
+  static async getComment(bookId){
+    const bookComments=await BookComment.findAll({
+      where:{
+        book_id:bookId
+      }
+    })
+    if(bookComments){
+      return bookComments
+    }else{
+      return []
+    }
+  }
   static async addComment(bookId,content){
     const bookComment=await BookComment.findOne({
       where:{

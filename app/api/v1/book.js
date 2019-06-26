@@ -115,6 +115,14 @@ router.get('/hot_list', async (ctx, next) => {
   })
   ctx.body = books
 })
+//获取短评
+router.get('/:id/short_comment',async (ctx,next)=>{
+  const v= await new PositiveIntegerValidator().validate(ctx)
+  const res=await BookComment.getComment(v.get('path.id'))
+  throw new Success('获取短评成功', 0, {
+    data: res
+  })
+})
 //增加短评
 router.post('/add/short_comment', new Auth().m, async (ctx, next) => {
   const v = await new CommentValidator().validate(ctx)
