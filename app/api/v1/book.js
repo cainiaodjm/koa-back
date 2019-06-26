@@ -124,7 +124,7 @@ router.get('/:id/short_comment',async (ctx,next)=>{
   })
 })
 //增加短评
-router.post('/add/short_comment', new Auth().m, async (ctx, next) => {
+router.post('/add/short_comment', async (ctx, next) => {
   const v = await new CommentValidator().validate(ctx)
   const res = await BookComment.addComment(v.get('body.book_id'), v.get('body.content'))
   throw new Success('添加短评成功', 0, {
