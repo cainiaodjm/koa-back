@@ -45,7 +45,7 @@ class Repeat extends HttpException{
     super()
     this.errorMessage=errorMessage|| "重复操作"
     this.errorCode=errorCode || 60001
-    this.code=400
+    this.code=200
   }
 }
 class Forbbiden extends HttpException{

@@ -134,7 +134,7 @@ class CommentValidator extends LinValidator{
   constructor(){
     super()
     this.content=[
-      new Rule('isLength','短评字数不符合规范',{min:6,max:24})
+      new Rule('isLength','短评字数不符合规范',{min:1,max:24})
     ]
     this.book_id=[
       new Rule('isInt','book_id参数不合法',{min:1})

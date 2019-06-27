@@ -5,7 +5,7 @@ const router = new Router({
   prefix: '/v1/classic'
 })
 const { Auth } = require('../../../middlewares/auth')
-const { HttpException, ParameterException, NotFound } = require('../../../core/http-exception')
+const { HttpException, ParameterException, NotFound,Success } = require('../../../core/http-exception')
 const { PositiveIntegerValidator, LikeValidator } = require('../../validators/validator')
 const { Art } = require('../../models/art')
 router.get('/latest', new Auth().m, async (ctx, next) => {
@@ -19,7 +19,9 @@ router.get('/latest', new Auth().m, async (ctx, next) => {
   const isUserLike = await Favor.isUserLike(flow.art_id, flow.type, uid)
   art.setDataValue('index', flow.index)
   art.setDataValue('like_status', isUserLike ? '1' : "0")
-  ctx.body = art
+  throw new Success('获取成功',0,{
+    data:art
+  })
 })
 /**
  * 获取下一期期刊
@@ -30,19 +32,22 @@ router.get('/:index/next', new Auth().m, async (ctx, next) => {
   })
   const uid = ctx.auth.uid
   const index = v.get('path.index')
+  
   const flow = await Flow.findOne({
     where: {
       index: index + 1
     }
   })
   if (!flow) {
-    throw new NotFound('资源未找到')
+    throw new Success('没有下一期',1006,{})
   }
   const art = await Art.getData(flow.art_id, flow.type)
   const isUserLike = await Favor.isUserLike(flow.art_id, flow.type, uid)
   art.setDataValue('index', flow.index)
   art.setDataValue('like_status', isUserLike ? '1' : "0")
-  ctx.body = art
+  throw new Success('获取成功',0,{
+    data:art
+  })
 
 })
 /**
@@ -60,13 +65,15 @@ router.get('/:index/previous', new Auth().m, async (ctx, next) => {
     }
   })
   if (!flow) {
-    throw new NotFound('资源未找到')
+    throw new Success('没有上一期',1006,{})
   }
   const art = await Art.getData(flow.art_id, flow.type)
   const isUserLike = await Favor.isUserLike(flow.art_id, flow.type, uid)
   art.setDataValue('index', flow.index)
   art.setDataValue('like_status', isUserLike ? '1' : "0")
-  ctx.body = art
+  throw new Success('获取成功',0,{
+    data:art
+  })
 
 })
 /**
