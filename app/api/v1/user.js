@@ -7,7 +7,11 @@ const {Success,NotFound}=require('../../../core/http-exception')
 const router = new Router({
   // prefix:'v1/user'
 })
-
+router.post('/v1/user/login',async(ctx,next)=>{
+  throw new Success('登录成功',0,{
+    "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjMsInNjb3BlIjo4LCJpYXQiOjE1NjExMDEzMjYsImV4cCI6MTU2MTEwNDkyNn0.oVGcXolQcnQ1Adg-ZffzJuVQhTcyDqaocDrSM_IBbNU"
+  })
+})
 router.post('/v1/user/register',async (ctx,next)=>{ 
   const v=await new RegisterValidator().validate(ctx)
 

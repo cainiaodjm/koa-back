@@ -11,7 +11,6 @@ class Art {
    * 分类后对每个分类的表进行In查询
    */
   static async getList(artInfoList){
-    
     let queryObj={
       movie:[],
       music:[],
@@ -52,6 +51,7 @@ class Art {
               }
             }
           })
+         
           movies.forEach((item)=>{
             list.push(item)
           })
@@ -69,6 +69,7 @@ class Art {
                 }
               }
             })
+            console.log(musices)
             musices.forEach((item)=>{
               list.push(item)
             })

@@ -74,7 +74,13 @@ router.get('/:index/previous', new Auth().m, async (ctx, next) => {
   throw new Success('获取成功',0,{
     data:art
   })
-
+})
+/**
+ * 获取所有期刊
+ */
+router.get('/list',async (ctx,next)=>{
+  const flows=await Flow.list()
+  throw new Success('查询成功',0,flows)
 })
 /**
  * 获取某一期的详细信息

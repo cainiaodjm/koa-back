@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken')
+const moment=require('moment')
 const config=require('../config/config')
 /***
  * 
@@ -20,6 +21,20 @@ const generateToken=function(uid,scope){
         expiresIn
     })
     return token
+}
+const getRandomString=function(length){
+    let result=''
+    const chars='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    for (let  i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
+    return result;
+}
+const getFilePathByTime=function(fileName,root='file_manage',){
+    const year=moment().year()
+    const month=moment().month()+1
+    const day=moment().date()
+    const randomString=getRandomString(32)
+    let filePath=`${root}/${year}/${month}/${day}/${fileName}-${randomString}`
+    return filePath
 }
 
 
@@ -69,21 +84,9 @@ const findMembers = function (instance, {
     return _find(instance)
 }
 
-
-
-// const generateToken = function (uid, scope) {
-//     const secretKey = global.config.security.secretKey
-//     const expiresIn = global.config.security.expiresIn
-//     const token = jwt.sign({
-//         uid,
-//         scope
-//     }, secretKey, {
-//         expiresIn: expiresIn
-//     })
-//     return token
-// }
-
 module.exports = {
     findMembers,
     generateToken,
+    getRandomString,
+    getFilePathByTime
 }

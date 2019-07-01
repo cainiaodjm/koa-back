@@ -1,4 +1,5 @@
 const Koa=require('koa')
+const cors = require('koa-cors');
 const parser = require('koa-bodyparser')
 const static=require('koa-static')
 const fs=require('fs')
@@ -8,6 +9,7 @@ const http=require('http')
 const InitManager=require('./core/init')
 
 
+
 const catchError =require('./middlewares/exception')
 
 
@@ -15,6 +17,7 @@ const enforceHttps = require('koa-sslify');
 
 const {logging} =require('./middlewares/logging')
 const app=new Koa()
+app.use(cors())
 app.use(parser())
 app.use(logging)
 app.use(catchError)

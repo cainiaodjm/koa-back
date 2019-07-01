@@ -24,6 +24,13 @@ class Flow extends Model{
     return flow.id
 
   }
+  static async list(){
+    let flows=await Flow.findAll()
+    const {Art} =require('./art')
+    const res=await Art.getList(flows)
+    
+    return res
+  }
   static async addFavNumsByTypeIdAndType(type_id,type){
     let flow=await Flow.findOne({
       where:{

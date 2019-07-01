@@ -1,4 +1,5 @@
 const OSS =require('ali-oss')
+const {getFilePathByTime} =require('../../core/util')
 const client= new OSS({
   region:'oss-cn-beijing',
   accessKeyId:"LTAI4Hor5P1itsLt",
@@ -6,9 +7,11 @@ const client= new OSS({
   bucket:"cainiaodjm"
 })
 async function put(objectName,localFile){
+  console.log(objectName,'filename')
   try {
-    ///file_manage/2019/6/30
-    let result = await client.put('file_manage/2019/'+objectName, localFile);
+    let path=getFilePathByTime(objectName)
+    console.log(path)
+    let result = await client.put(path, localFile);
     return result
   } catch (error) {
     console.log(error);
