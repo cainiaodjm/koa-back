@@ -141,6 +141,19 @@ class CommentValidator extends LinValidator{
     ]
   }
 }
+class FileListValidator extends LinValidator{
+  constructor(){
+    super()
+    this.prefix=[
+      new Rule('isLength','目录前缀不能为空',{min:1}),
+      new Rule('optional','')
+    ]
+    this.marker=[
+      new Rule('isLength','目录后缀不能为空',{min:1}),
+      new Rule('optional','')
+    ]
+  }
+}
 class SearchValidator extends LinValidator{
   constructor(){
     super()
@@ -185,5 +198,6 @@ module.exports={
   BookValidator,
   LikeValidator,
   SearchValidator,
-  CommentValidator
+  CommentValidator,
+  FileListValidator
 }

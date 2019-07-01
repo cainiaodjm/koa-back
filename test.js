@@ -12,8 +12,14 @@ async function listBuckets() {
     console.log(error)
   }
 }
-// listBuckets()
-client.useBucket('cainiaodjm')
+async function put(){
+  try {
+    let result = await client.put('test-sa', 'local-file');
+    console.log(result)
+  } catch (error) {
+    console.log(error);
+  }
+}
 async function list (){
   try {
     let result=await client.list({
@@ -24,4 +30,5 @@ async function list (){
     console.log(error)
   }
 }
-list()
+// list()
+put()
