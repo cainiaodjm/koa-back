@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken')
 const moment=require('moment')
+const { Snowflake } = require('node-snowflake')
 const config=require('../config/config')
 /***
  * 
@@ -39,7 +40,9 @@ const getFilePathByTime=function(fileName,root='file_manage',){
 
 
 
-
+const snowflake=function(num=0){
+    return Snowflake.nextId(1, 1, Math.floor((1000 + num) * Math.random()))
+}
 
 
 
@@ -88,5 +91,6 @@ module.exports = {
     findMembers,
     generateToken,
     getRandomString,
-    getFilePathByTime
+    getFilePathByTime,
+    snowflake
 }

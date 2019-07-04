@@ -141,16 +141,55 @@ class CommentValidator extends LinValidator{
     ]
   }
 }
+class GetFileValidator extends LinValidator{
+  constructor(){
+    super()
+    this.key=[
+      new Rule('isLength','key为必填字段',{min:1})
+    ]
+    this.source=[
+      new Rule('optional','','local'),
+    ]
+  }
+  validateArtType(vals){
+    let type=vals.body.type 
+    let source=vals.body.source
+    let typeOptions=[
+      "download",
+      "text"
+    ]
+    let sourceOptions=[
+      "local",
+      "oss"
+    ]
+    let sorceFlag=sourceOptions.findIndex((item)=>{
+      return item === source
+    })
+    
+    if(!type){
+      throw new Error('缺少type字段')
+    }
+    if(typeOptions.findIndex((item)=>{
+      return item === type
+    })=== -1){
+      throw new Error('type参数不合法')
+    }
+    if(sorceFlag === -1){
+      throw new Error('source参数不合法')
+    }
+
+  }
+}
 class FileListValidator extends LinValidator{
   constructor(){
     super()
-    this.prefix=[
-      new Rule('isLength','目录前缀不能为空',{min:1}),
-      new Rule('optional','')
+    this.start=[
+      new Rule('isInt','start不符合规范',{min:0, max:60000}),
+      new Rule('optional','',0),
     ]
-    this.marker=[
-      new Rule('isLength','目录后缀不能为空',{min:1}),
-      new Rule('optional','')
+    this.count=[
+      new Rule('isInt','count不符合规范',{min:1,max:20}),
+      new Rule('optional','',20),
     ]
   }
 }
@@ -163,7 +202,7 @@ class SearchValidator extends LinValidator{
       new Rule('optional','',0),
     ]
     this.count=[
-      new Rule('isInt','start不符合规范',{min:1,max:20}),
+      new Rule('isInt','count不符合规范',{min:1,max:20}),
       new Rule('optional','',20),
     ]
   }
@@ -199,5 +238,6 @@ module.exports={
   LikeValidator,
   SearchValidator,
   CommentValidator,
-  FileListValidator
+  FileListValidator,
+  GetFileValidator
 }
