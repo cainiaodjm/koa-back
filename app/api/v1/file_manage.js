@@ -1,17 +1,20 @@
 const Router = require('koa-router')
+const fs= require('fs')
 const send=require('koa-send')
 const {filePath}=require('../../../config/config')
 const { FileManage } = require('../../models/file_manage')
 const formidable = require('formidable')
 const {FileListValidator,GetFileValidator}=require('../../validators/validator')
 const {Success}=require('../../../core/http-exception')
-const {put,list}=require('../../lib/oss')
+const {put,list,getFileUrl}=require('../../lib/oss')
 const {Auth}=require('../../../middlewares/auth')
 const router = new Router({
   prefix: '/v1/file'
 })
 router.get('/get_file_list', async (ctx, next) => {
   const v= await new FileListValidator().validate(ctx);
+  console.log(v.get('body.start'))
+  console.log(v.get('body.count'))
   const fileList=await FileManage.findAll()
   throw new Success('查询成功',0,fileList)
 })
@@ -50,7 +53,9 @@ function _saveFile(ctx) {
 router.post('/delete_file', async (ctx, next) => {
 
 })
-router.get('/get_file', async (ctx, next) => {
+
+router.post('/get_file', async (ctx, next) => {
+
 
     /**
      * 前端通过 key 和 type来获取文件
@@ -60,33 +65,64 @@ router.get('/get_file', async (ctx, next) => {
     const v= await new GetFileValidator().validate(ctx)
     const key=v.get('body.key')
     const type=v.get('body.type')
+    const source=v.get('body.source')
+    console.log('adada')
+    console.log('adada')
+    console.log(key,1)
+    console.log(type,2)
+    
     let fileInfo=await FileManage.findOne({
       where:{
         key
       }
     })
+
     if(!fileInfo){
       throw new Success('文件未找到',10006,{})
     }
-    const {oss_url,path,file_name}=fileInfo
-    if(!path) throw new Success("文件不存在","10006")
-    switch (type) {
-      case "download":
-        // ctx.set({
-        //   'Content-Type':'text/html',
-        //   'Content-Dispositon':`attachment;filename=${encodeURI(file_name)}`
-        // }).att
-        ctx.attachment(path)
-        await send(ctx,path)
-        
-        break;
-    
-      default:
-        break;
+    const {oss_url,path,file_name,oss_name,file_type}=fileInfo
+    if(source==='oss'){
+      if(!oss_url){
+        throw new Success('文件未找到',10006,{})
+      }
+      switch(type){
+        case "download":
+          let url=await getFileUrl(oss_name)
+          throw new Success('获取成功',0,{
+            url,
+            file_name,
+            file_type
+          })
+         
+          default:break;
+      }
+    }else if(source === 'local'){
+      switch (type) {
+      
+        case "download":
+            
+          //   console.log(fs.createReadStream(path))
+          ctx.set({
+            'Content-Type':'text/html',
+            'Content-Dispositon':`attachment;filename=${encodeURI(file_name)}`
+          })
+          let localDir=''
+          for(let i=0;i<path.split('/').length-1;i++){
+            if(i!==0){
+              localDir+=`/${path.split('/')[i]}`
+            }
+          }
+          let localPath=path.split('/')[path.split('/').length-1]
+          await send(ctx,localPath,{root:localDir})
+          break;
+      
+        default:
+          break;
+      }
     }
-    throw new Success(0,'获取成功',{
-      key,
-      type
-    })
+    
+    if(!path) throw new Success("文件不存在","10006")
+
+    
 })
 module.exports = router

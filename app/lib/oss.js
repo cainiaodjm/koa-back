@@ -6,6 +6,12 @@ const client= new OSS({
   accessKeySecret:"EKzYbRoqnJzkAcD5Wg9QPAuSRpMK9h",
   bucket:"cainiaodjm"
 })
+
+async function getFileUrl(objectName){
+  return client.signatureUrl(objectName,{expires:3600*2})
+}
+
+// async function downloadByStream(objectName,)
 async function put(objectName,localFile){
   console.log(objectName,'filename')
   try {
@@ -47,5 +53,6 @@ async function list(prefix,marker) {
   
 }
 module.exports={
-  put,list
+  put,list,
+  getFileUrl
 }

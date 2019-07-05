@@ -6,6 +6,27 @@ const config=require('../config/config')
  * 
  */
 
+const getNewToken=function(token){
+    console.log(token)
+    const expiresIn=config.security.expiresIn
+    const secretKey=config.security.secretKey
+    let newToken=""
+    try {
+        let decode=jwt.verify(token,secretKey)
+        console.log(decode)
+        newToken= jwt.sign({
+            uid:decode.uid,
+            scope:decode.scope
+        },secretKey,{
+            expiresIn
+        })
+        return newToken
+    } catch (error) {
+       return false
+    }
+    
+    
+} 
  /**
   * 
   * @param {*} uid   用户id
@@ -92,5 +113,6 @@ module.exports = {
     generateToken,
     getRandomString,
     getFilePathByTime,
-    snowflake
+    snowflake,
+    getNewToken
 }

@@ -13,7 +13,7 @@ module.exports = {
    */
   security: {
     secretKey: "cainiaodjm",
-    expiresIn: 60 * 60
+    expiresIn: 60 * 60*2
   },
   wx: {
     appID: 'wxfe8525810bdf490f',
