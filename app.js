@@ -17,7 +17,9 @@ const enforceHttps = require('koa-sslify');
 
 const {logging} =require('./middlewares/logging')
 const app=new Koa()
-app.use(cors())
+app.use(cors({
+  // exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
+}))
 app.use(parser())
 app.use(logging)
 app.use(catchError)

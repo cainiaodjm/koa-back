@@ -6,16 +6,16 @@ const { FileManage } = require('../../models/file_manage')
 const formidable = require('formidable')
 const {FileListValidator,GetFileValidator}=require('../../validators/validator')
 const {Success}=require('../../../core/http-exception')
-const {put,list,getFileUrl}=require('../../lib/oss')
+const {put,list,getFileUrl,getFileSteam}=require('../../lib/oss')
 const {Auth}=require('../../../middlewares/auth')
 const router = new Router({
   prefix: '/v1/file'
 })
 router.get('/get_file_list', async (ctx, next) => {
   const v= await new FileListValidator().validate(ctx);
-  console.log(v.get('body.start'))
-  console.log(v.get('body.count'))
-  const fileList=await FileManage.findAll()
+  const start=v.get('query.start')
+  const count=v.get('query.count')
+  const fileList=await FileManage.getFileList(start,count)
   throw new Success('查询成功',0,fileList)
 })
 router.post('/upload_file',new Auth().m, async (ctx, next) => {
@@ -53,7 +53,41 @@ function _saveFile(ctx) {
 router.post('/delete_file', async (ctx, next) => {
 
 })
+router.get('/get_file',async (ctx,next)=>{
+  const v= await new GetFileValidator().validate(ctx)
+  const key=v.get('query.key')
+  const type=v.get('query.type')
+  const source=v.get('query.source')
+  let fileInfo=await FileManage.findOne({
+    where:{
+      key
+    }
+  })
+  
+  let {oss_name,path,file_name}=fileInfo
+  // let stream=await getFileSteam(oss_name)
 
+  // let writeStream = fs.createWriteStream('temp');
+  // stream.stream.pipe(writeStream);
+  // fs.createReadStream(path).pipe(process.stdout)
+  /**
+   * Access-Control-Expose-Headers 这个请求头可以让前端获取你这边设置的请求头 
+   */
+  ctx.set({
+    'Content-Type':'text/html',
+    'Content-Dispositon':`attachment;filename=${encodeURI(file_name)}`,
+    'Access-Control-Expose-Headers':'Content-Dispositon'
+  })
+  let localDir=''
+  for(let i=0;i<path.split('/').length-1;i++){
+    if(i!==0){
+      localDir+=`/${path.split('/')[i]}`
+    }
+  }
+  let localPath=path.split('/')[path.split('/').length-1]
+  await send(ctx,localPath,{root:localDir})
+  // ctx.body={fileInfo}
+})
 router.post('/get_file', async (ctx, next) => {
 
 
@@ -65,12 +99,7 @@ router.post('/get_file', async (ctx, next) => {
     const v= await new GetFileValidator().validate(ctx)
     const key=v.get('body.key')
     const type=v.get('body.type')
-    const source=v.get('body.source')
-    console.log('adada')
-    console.log('adada')
-    console.log(key,1)
-    console.log(type,2)
-    
+    const source=v.get('body.source')  
     let fileInfo=await FileManage.findOne({
       where:{
         key

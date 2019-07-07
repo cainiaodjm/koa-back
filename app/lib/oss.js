@@ -11,6 +11,17 @@ async function getFileUrl(objectName){
   return client.signatureUrl(objectName,{expires:3600*2})
 }
 
+async function getFileSteam(objectName){
+  try {
+    let result = await client.getStream(objectName);
+    return result
+    // let writeStream = fs.createWriteStream('local-file');
+    // result.stream.pipe(writeStream);
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 // async function downloadByStream(objectName,)
 async function put(objectName,localFile){
   console.log(objectName,'filename')
@@ -54,5 +65,6 @@ async function list(prefix,marker) {
 }
 module.exports={
   put,list,
-  getFileUrl
+  getFileUrl,
+  getFileSteam
 }

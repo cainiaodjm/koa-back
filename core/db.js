@@ -1,5 +1,5 @@
 const Sequelize =require('sequelize')
-
+const moment=require('moment')
 const {
   dbName,
   host,
@@ -15,11 +15,8 @@ const sequelize=new Sequelize(dbName,user,password,{
     timezone:'+08:00',
     define:{
       paranoid: true,
-      createdAt: "created_at",
-      // I want updatedAt to actually be called updateTimestamp
+      createdAt: 'created_at',
       updatedAt: 'updated_at',
-    
-      // And deletedAt to be called destroyTime (remember to enable paranoid for this to work)
       deletedAt: 'deleted_at',
       scopes:{
         bh:{

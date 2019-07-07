@@ -1,16 +1,31 @@
 const { sequelize } = require('../../core/db')
 const { Sequelize, Model } = require('sequelize')
 const { snowflake } = require('../../core/util')
+const  moment  = require('moment')
 
 
 class FileManage extends Model {
+  static async getFileList(start, count) {
+    const fileCount = await FileManage.findAll({
+      attributes: [[Sequelize.fn('COUNT', '*'), 'count']],
+    })
+    const fileList = await FileManage.findAll({
+      offset: start,
+      limit: count,
+      order: [
+        ['created_at', 'DESC']
+      ]
+    })
+    return {
+      fileList,
+      count: fileCount[0].dataValues.count
+    }
+  }
   static async uploadFile(fileInfo, uid) {
-    const { size, path, name, type,oss_url,oss_name } = fileInfo
-    console.log(path)
-    console.log(fileInfo)
+    const { size, path, name, type, oss_url, oss_name } = fileInfo
     const nameSplit = path.split('/')
     const save_name = nameSplit[nameSplit.length - 1]
-    let insertRes=null
+    let insertRes = null
     insertRes = await FileManage.create({
       path,
       file_size: size,
@@ -23,7 +38,7 @@ class FileManage extends Model {
       key: snowflake()
     })
     return insertRes
-    
+
   }
 }
 FileManage.init({
@@ -37,13 +52,13 @@ FileManage.init({
     allowNull: false,
     column: '文件保存路径'
   },
-  oss_url:{
-    type:Sequelize.STRING,
-    column:'阿里云Url'
+  oss_url: {
+    type: Sequelize.STRING,
+    column: '阿里云Url'
   },
-  oss_name:{
-    type:Sequelize.STRING,
-    column:'阿里云存储位置'
+  oss_name: {
+    type: Sequelize.STRING,
+    column: '阿里云存储位置'
   },
   file_name: {
     type: Sequelize.STRING,
@@ -74,7 +89,21 @@ FileManage.init({
     type: Sequelize.INTEGER,
     allowNull: true,
     column: '文件存放时长，不填则为永久'
-  }
+  },
+  created_at: {
+    type: Sequelize.DATE,
+    get() {
+      return moment(this.getDataValue('created_at')).format('YYYY-MM-DD HH:mm:ss');
+    }
+  },
+  updated_at: {
+    type: Sequelize.DATE,
+    get() {
+      return moment(this.getDataValue('updated_at')).format('YYYY-MM-DD HH:mm:ss');
+    }
+  },
+
+
 }, {
     sequelize,
     tableName: 'file_manage',

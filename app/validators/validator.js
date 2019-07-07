@@ -147,13 +147,16 @@ class GetFileValidator extends LinValidator{
     this.key=[
       new Rule('isLength','key为必填字段',{min:1})
     ]
+    this.type=[
+      new Rule('isLength','type为必填字段',{min:1})
+    ]
     this.source=[
       new Rule('optional','','local'),
     ]
   }
-  validateArtType(vals){
-    let type=vals.body.type 
-    let source=vals.body.source
+  validateType(vals){
+    let type=vals.body.type || vals.path.type || vals.query.type
+    let source=vals.body.source || vals.path.source || vals.query.source
     let typeOptions=[
       "download",
       "text"
