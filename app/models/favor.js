@@ -75,7 +75,7 @@ class Favor extends Model{
         transaction:t
       })
       const art = await Art.getData(art_id,type,false)
-      console.log(art)
+     
       await art.decrement('fav_nums',{by:1,transaction:t})
     })
   }

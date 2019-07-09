@@ -69,7 +69,7 @@ class Art {
                 }
               }
             })
-            console.log(musices)
+        
             musices.forEach((item)=>{
               list.push(item)
             })

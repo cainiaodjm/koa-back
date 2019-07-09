@@ -196,6 +196,54 @@ class FileListValidator extends LinValidator{
     ]
   }
 }
+class FlowValidator extends LinValidator{
+  constructor(){
+    super()
+    this.title=[
+      new Rule('isLength','标题不能为空',{min:1})
+    ]
+    this.content=[
+      new Rule('isLength','内容不能为空',{min:6})
+    ]
+    this.type=[
+      new Rule('isInt','需要的是正整数',{min:1})
+    ]
+    this.image=[
+      new Rule('isLength','图片地址不能为空',{min:6})
+    ]
+    this.musicUrl=[
+      new Rule('isLength','音乐路径不能为空',{min:1}),
+      new Rule('optional','',0),
+    ]
+    this.pubdate=[
+      new Rule('isLength','发布日期不能为空',{min:1}),
+    ]
+  }
+  validateArtType(vals){
+    let type=vals.body.type || vals.path.type
+    if(!type){
+      throw new Error('缺少type字段')
+    }
+    if(!ArtType.isThisType(type)){
+      throw new Error('type参数不合法')
+    }
+
+  }
+
+}
+class PageValidator extends LinValidator{
+  constructor(){
+    super()
+    this.start=[
+      new Rule('isInt','start不符合规范',{min:0, max:60000}),
+      new Rule('optional','',0),
+    ]
+    this.count=[
+      new Rule('isInt','count不符合规范',{min:1,max:60000}),
+      new Rule('optional','',20),
+    ]
+  }
+}
 class SearchValidator extends LinValidator{
   constructor(){
     super()
@@ -242,5 +290,7 @@ module.exports={
   SearchValidator,
   CommentValidator,
   FileListValidator,
-  GetFileValidator
+  GetFileValidator,
+  FlowValidator,
+  PageValidator
 }

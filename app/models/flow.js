@@ -24,8 +24,14 @@ class Flow extends Model{
     return flow.id
 
   }
-  static async list(){
-    let flows=await Flow.findAll()
+  static async list(start,count){
+    let flows=await Flow.findAll({
+      offset: start,
+      limit: count,
+      order: [
+        ['index', 'DESC']
+      ]
+    })
     const {Art} =require('./art')
     const res=await Art.getList(flows)
     
@@ -52,6 +58,77 @@ class Flow extends Model{
     })
 
     return flow.id
+  }
+  static async addFlow(title,content,type,image,musicUrl,pubdate){
+    /**
+     * 1.先找出最新的一期的index
+     * 2.根据类型 插入到对应的表中
+     */
+    const flow = await Flow.findOne({
+      order: [
+        ['index', 'DESC']
+      ]
+    })
+    const index =flow.index
+    const newIndex=index+1
+    if(type===100){
+      //插入到电影表中
+      const {Movie} =require('./classic')
+      const newMoive= await Movie.create({
+        title,
+        content,
+        pubdate,
+        type,
+        image,
+        index:newIndex
+      })
+      const art_id=newMoive.id
+      //插入到Flow表中
+      const newFlow=await Flow.create({
+        index:newIndex,
+        type,
+        art_id
+      })
+      return  newFlow
+    }else if(type === 200){
+      const {Music} =require('./classic')
+      const newMusic= await Music.create({
+        title,
+        content,
+        pubdate,
+        type,
+        image,
+        url:musicUrl,
+        index:newIndex
+      })
+      const art_id=newMusic.id
+      //插入到Flow表中
+      const newFlow=await Flow.create({
+        index:newIndex,
+        type,
+        art_id
+      })
+      return  newFlow
+    }else {
+      const {Sentence}=require('./classic')
+      const newSentence= await Sentence.create({
+        title,
+        content,
+        pubdate,
+        type,
+        image,
+        index:newIndex
+      })
+      const art_id=newSentence.id
+      const newFlow=await Flow.create({
+        index:newIndex,
+        type,
+        art_id
+      })
+      return  newFlow
+      
+    }
+
   }
 }
 Flow.init({

@@ -24,10 +24,8 @@ async function getFileSteam(objectName){
 
 // async function downloadByStream(objectName,)
 async function put(objectName,localFile){
-  console.log(objectName,'filename')
   try {
     let path=getFilePathByTime(objectName)
-    console.log(path)
     let result = await client.put(path, localFile);
     return result
   } catch (error) {
@@ -40,7 +38,6 @@ async function put(objectName,localFile){
  * @param {*} marker   // 列举前缀为'my-'且在'my-object'之后的文件。
  */
 async function list(prefix,marker) {
-  console.log(prefix)
   try {
     if(!prefix && !marker){
       let result=await client.list()  

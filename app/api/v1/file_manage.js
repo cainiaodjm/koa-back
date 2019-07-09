@@ -130,7 +130,7 @@ router.post('/get_file', async (ctx, next) => {
       
         case "download":
             
-          //   console.log(fs.createReadStream(path))
+         
           ctx.set({
             'Content-Type':'text/html',
             'Content-Dispositon':`attachment;filename=${encodeURI(file_name)}`

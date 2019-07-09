@@ -6,8 +6,20 @@ const router = new Router({
 })
 const { Auth } = require('../../../middlewares/auth')
 const { HttpException, ParameterException, NotFound,Success } = require('../../../core/http-exception')
-const { PositiveIntegerValidator, LikeValidator } = require('../../validators/validator')
+const { PositiveIntegerValidator, LikeValidator,FlowValidator ,PageValidator} = require('../../validators/validator')
 const { Art } = require('../../models/art')
+router.post('/add',new Auth().m,async(ctx,next)=>{
+  const uid=ctx.auth.uid
+  const v= await new FlowValidator().validate(ctx)
+  const title =v.get('body.title')
+  const content =v.get('body.content')
+  const image=v.get('body.image')
+  const type=v.get('body.type')
+  const musicUrl=v.get('body.musicUrl')
+  const pubdate=v.get('body.pubdate')
+  const result=  await Flow.addFlow(title,content,type,image,musicUrl,pubdate)
+  throw new Success("添加成功",0,result)
+})
 router.get('/latest', new Auth().m, async (ctx, next) => {
   const uid = ctx.auth.uid
   const flow = await Flow.findOne({
@@ -79,7 +91,11 @@ router.get('/:index/previous', new Auth().m, async (ctx, next) => {
  * 获取所有期刊
  */
 router.get('/list',async (ctx,next)=>{
-  const flows=await Flow.list()
+  const v=await new PageValidator().validate(ctx)
+  const start=v.get('query.start')
+  const count=v.get('query.count')
+  
+  const flows=await Flow.list(start,count)
   throw new Success('查询成功',0,flows)
 })
 /**

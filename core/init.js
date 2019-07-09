@@ -20,7 +20,6 @@ class InitManager{
     
     function whenLoadModule(obj){
       if(obj instanceof Router){
-        // console.log(obj)
         InitManager.app.use(obj.routes())
       }
     }

@@ -16,10 +16,9 @@ class Auth{
       //token 需要前端传递
       //HTTP 规定  身份验证机制 HttpBasicAuth
       //ctx.req获取的是nodejs原生的request  ctx.request 是koa封装的request
-      console.log(ctx.req)
+
       const userToken=basicAuth(ctx.req)
       let errMsg="token不合法"
-      console.log(userToken)
       if(!userToken || !userToken.name){
         throw new Forbbiden(errMsg)
       }
@@ -36,7 +35,6 @@ class Auth{
         errMsg="权限不足"
         throw new  Forbbiden(errMsg)
       }
-      console.log(decode)
       ctx.auth={
         uid:decode.uid,
         scope:decode.scope
@@ -50,7 +48,6 @@ class Auth{
       jwt.verify(token  ,security.secretKey)
       return true
     } catch (error) {
-      // console.log(error)
       return false
     }
     
