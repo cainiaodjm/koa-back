@@ -1,16 +1,31 @@
 const {sequelize}=require('../../core/db')
 const {Sequelize,Model}=require('sequelize')
 const {Category}=require('./blog_category')
+const {PostTag}=require('./blog_post_tag')
+
 const  moment  = require('moment')
 class Post extends Model{
-
+  static async createPost(author_id,content,title,category_id,tags){
+    const post= await Post.create({
+      author_id,
+      content,
+      title,
+      category_id
+    })
+    let postId=post.get("id")
+    for(let i=0;i<tags.length;i++){
+      await PostTag.create({
+        post_id:postId,
+        tag_id:tags[i]
+      })
+    }
+    return post
+  }
 }
 Post.init({
   id:{
     type:Sequelize.UUID,
-    defaultValue:function(){
-      return Sequelize.UUIDV1
-    },
+    defaultValue:Sequelize.UUIDV1,
     primaryKey:true,
   },
   author_id:{
@@ -46,7 +61,11 @@ Post.init({
     tableName: 'tb_blog_post',
 })
 Post.belongsTo(Category,{
-  as:'categroy_id'
+  foreignKey:"category_id"
+})
+Post.hasMany(PostTag,{
+  as:"flag",
+  foreignKey:'post_id'
 })
 
 module.exports={

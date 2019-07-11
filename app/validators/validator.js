@@ -276,7 +276,24 @@ class LikeValidator extends LinValidator{
     if(!ArtType.isThisType(type)){
       throw new Error('type参数不合法')
     }
+  }
 
+}
+class PostValidator extends LinValidator{
+  constructor(){
+    super()
+    this.title=[
+      new Rule('isLength','文章标题不能为空',{min:1,max:128})
+    ]
+    this.content=[
+      new Rule('isLength','文章标题不能为空',{min:1,max:102400})
+    ]
+    this.category_id=[
+      new Rule('isInt','需要的是正整数',{min:1})
+    ]
+    this.tags=[
+      new Rule('isLength','标签不能空',{min:1,max:1024})
+    ]
   }
 }
 module.exports={
@@ -292,5 +309,6 @@ module.exports={
   FileListValidator,
   GetFileValidator,
   FlowValidator,
-  PageValidator
+  PageValidator,
+  PostValidator
 }
