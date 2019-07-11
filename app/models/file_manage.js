@@ -5,6 +5,7 @@ const  moment  = require('moment')
 
 
 class FileManage extends Model {
+  
   static async getFileList(start, count) {
     const fileCount = await FileManage.findAll({
       attributes: [[Sequelize.fn('COUNT', '*'), 'count']],

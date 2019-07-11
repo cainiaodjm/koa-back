@@ -1,8 +1,14 @@
 const {sequelize}=require('../../core/db')
 const {Sequelize,Model}=require('sequelize')
+const {FileManage}=require('./file_manage')
 const {NotFound,AuthFaild}=require('../../core/http-exception')
 const bcrypt=require('bcryptjs')
 class User extends Model{
+  static async getUserFiles(uid){
+     const user=await User.findByPk(uid)
+     const files=await user.getFiles()
+     return files
+  }
   static async verifyEmailPassword(email,plainPassword){
     const user= await User.findOne({
       where:{
@@ -73,5 +79,9 @@ User.init({
 },{
   sequelize,
   tableName:'tb_user',
+})
+User.hasMany(FileManage,{
+  as:"files",
+  foreignKey:'user'
 })
 module.exports={User}

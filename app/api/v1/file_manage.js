@@ -3,6 +3,7 @@ const fs= require('fs')
 const send=require('koa-send')
 const {filePath}=require('../../../config/config')
 const { FileManage } = require('../../models/file_manage')
+const {User} =require('../../models/user')
 const formidable = require('formidable')
 const {FileListValidator,GetFileValidator}=require('../../validators/validator')
 const {Success}=require('../../../core/http-exception')
@@ -17,6 +18,11 @@ router.get('/get_file_list', async (ctx, next) => {
   const count=v.get('query.count')
   const fileList=await FileManage.getFileList(start,count)
   throw new Success('查询成功',0,fileList)
+})
+router.get('/get_user_file',new Auth().m, async (ctx,next)=>{
+  const uid =ctx.auth.uid
+  const files=await User.getUserFiles(uid)
+  ctx.body=files
 })
 router.post('/upload_file',new Auth().m, async (ctx, next) => {
   const uid=ctx.auth.uid

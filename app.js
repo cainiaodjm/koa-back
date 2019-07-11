@@ -7,11 +7,7 @@ const path=require('path')
 const https=require('https')
 const http=require('http')
 const InitManager=require('./core/init')
-
-
-
 const catchError =require('./middlewares/exception')
-
 
 const enforceHttps = require('koa-sslify');
 
