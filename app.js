@@ -24,17 +24,17 @@ InitManager.initCore(app)
 
 // app.use(enforceHttps());
 
-const option={
-  key:fs.readFileSync('./config/https/2212554_www.cainiaodjm.top.key'),
-  cert:fs.readFileSync('./config/https/2212554_www.cainiaodjm.top.pem')
-}
-http.createServer(app.callback()).listen(17100);
-https.createServer(option, app.callback()).listen(17000);
+// const option={
+//   key:fs.readFileSync('./config/https/2212554_www.cainiaodjm.top.key'),
+//   cert:fs.readFileSync('./config/https/2212554_www.cainiaodjm.top.pem')
+// }
+// http.createServer(app.callback()).listen(17100);
+// https.createServer(option, app.callback()).listen(17000);
 
 
-// app.listen(17000,()=>{
-//   console.log('监听------17000')
-// })
+app.listen(17000,()=>{
+  console.log('监听------17000')
+})
 // https.createServer(option,app.callback()).listen(17000,function(err){
 //   console.log("https listening on port: 17000");
 // })
