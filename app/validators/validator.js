@@ -279,6 +279,14 @@ class LikeValidator extends LinValidator{
   }
 
 }
+class PostIdValdiator extends LinValidator{
+  constructor(){
+    super()
+    this.id=[
+      new Rule('isLength','文章Id不能为空',{min:1,max:128}) 
+    ]
+  }
+}
 class PostValidator extends LinValidator{
   constructor(){
     super()
@@ -310,5 +318,6 @@ module.exports={
   GetFileValidator,
   FlowValidator,
   PageValidator,
-  PostValidator
+  PostValidator,
+  PostIdValdiator
 }

@@ -3,13 +3,23 @@ const {Success,NotFound}=require('../../../core/http-exception')
 const {Auth}=require('../../../middlewares/auth')
 const {Post}= require('../../models/blog_post')
 const {Tag}=require('../../models/blog_tag')
-const {PostValidator}=require('../../validators/validator')
+const {PostValidator,PostIdValdiator}=require('../../validators/validator')
 const {PostTag} =require('../../models/blog_post_tag')
 const router = new Router({
   prefix:'/v1/post'
 })
 router.get('/list',async (ctx,next)=>{
   ctx.body=await Post.findAll()
+})
+router.get('/detail',async(ctx,next)=>{
+  const v=await new PostIdValdiator().validate(ctx)
+  const id=v.get('query.id')
+  const post = await Post.findOne({
+    where:{
+      id:id
+    }
+  })
+  throw new Success('查询成功',0,post)
 })
 router.post('/add',new Auth().m, async (ctx,next)=>{
   /**
