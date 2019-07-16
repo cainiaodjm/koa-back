@@ -20,6 +20,21 @@ router.post('/add',new Auth().m,async(ctx,next)=>{
   const result=  await Flow.addFlow(title,content,type,image,musicUrl,pubdate)
   throw new Success("添加成功",0,result)
 })
+router.get('/oldest',new Auth().m,async(ctx,next)=>{
+  const uid = ctx.auth.uid
+  const flow = await Flow.findOne({
+    order: [
+      ['index', 'ASC']
+    ]
+  })
+  const art = await Art.getData(flow.art_id, flow.type)
+  const isUserLike = await Favor.isUserLike(flow.art_id, flow.type, uid)
+  art.setDataValue('index', flow.index)
+  art.setDataValue('like_status', isUserLike ? '1' : "0")
+  throw new Success('获取成功',0,{
+    data:art
+  })
+})
 router.get('/latest', new Auth().m, async (ctx, next) => {
   const uid = ctx.auth.uid
   const flow = await Flow.findOne({
@@ -27,6 +42,7 @@ router.get('/latest', new Auth().m, async (ctx, next) => {
       ['index', 'DESC']
     ]
   })
+
   const art = await Art.getData(flow.art_id, flow.type)
   const isUserLike = await Favor.isUserLike(flow.art_id, flow.type, uid)
   art.setDataValue('index', flow.index)
