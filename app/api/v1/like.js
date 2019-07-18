@@ -8,7 +8,6 @@ const router = new Router({
 })
 router.post('/',new Auth().m, async(ctx,next)=>{
   const v= await new  LikeValidator().validate(ctx)
- 
   const uid=ctx.auth.uid
   await Favor.like(v.get('body.art_id'),v.get('body.type'),uid)
   throw new Success('点赞成功',0)

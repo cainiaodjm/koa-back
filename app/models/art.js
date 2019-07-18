@@ -142,6 +142,7 @@ class Art {
       default:
         break;
     }
+    console.log(art)
     return art
   }
 }

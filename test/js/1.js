@@ -29,10 +29,10 @@
 //     console.log(baz)
 //   }
 // }
-function foo(){
-  var a=2
-  function bar(){
-    console.log(a)
-  }
-  return bar
-}
+// function foo(){
+//   var a=2
+//   function bar(){
+//     console.log(a)
+//   }
+//   return bar
+// }

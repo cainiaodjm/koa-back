@@ -18,6 +18,7 @@ router.post('/add',new Auth().m,async(ctx,next)=>{
   const musicUrl=v.get('body.musicUrl')
   const pubdate=v.get('body.pubdate')
   const result=  await Flow.addFlow(title,content,type,image,musicUrl,pubdate)
+  console.log(result)
   throw new Success("添加成功",0,result)
 })
 router.get('/oldest',new Auth().m,async(ctx,next)=>{
@@ -166,9 +167,6 @@ router.get('/favor', new Auth().m, async (ctx, next) => {
   const uid = ctx.auth.uid
   const arts=await Favor.getMyClassicFavors(uid)
   const res=await Art.getList(arts)
-
-  
-  ctx.body=res
-
+  throw new Success('查询成功',0,res)
 })
 module.exports = router

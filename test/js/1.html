@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  
+</body>
+<script>
+  // window.n="window name"
+  // let obj={
+  //   n:'obj name',
+  //   sayN:()=>{
+  //     console.log(this.n)
+  //   }
+  // }
+  // obj.sayN()
+  // let fn=obj.sayN
+  // fn()
+  class A{
+    constructor(){
+      this.name ="A"
+    }
+    sayName(){
+      console.log(this.name)
+    }
+  }
+  class B extends A{
+    constructor(){
+      super()
+      this.name="B"
+    }
+  }
+  let obj=new B()
+  Promise.reject('error').then(()=>{
+    console.log('success1')
+  },()=>{
+    console.log('error1')
+  }).then(()=>{
+    console.log('success2')
+  },()=>{
+    console.log('error2')
+  })
+</script>
+</html>
