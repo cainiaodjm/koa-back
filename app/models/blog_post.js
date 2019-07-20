@@ -16,6 +16,9 @@ class Post extends Model{
       limit: count,
       order: [
         ['created_at', 'DESC']
+      ],
+      include:[
+
       ]
     })
     return {
