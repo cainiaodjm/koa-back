@@ -1,6 +1,7 @@
 const {sequelize}=require('../../core/db')
 const {Sequelize,Model}=require('sequelize')
 const {PostTag}=require('./blog_post_tag')
+const  {Post} =require('./blog_post')
 const  moment  = require('moment')
 class Tag extends Model{
 
@@ -31,10 +32,7 @@ Tag.init({
   sequelize,
   tableName: 'tb_blog_tag',
 })
-Tag.hasMany(PostTag,{
-  as:'post',
-  foreignKey:"tag_id"
-})
+
 module.exports={
   Tag
 }

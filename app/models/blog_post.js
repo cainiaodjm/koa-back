@@ -2,15 +2,19 @@ const {sequelize}=require('../../core/db')
 const {Sequelize,Model}=require('sequelize')
 const {Category}=require('./blog_category')
 const {PostTag}=require('./blog_post_tag')
+const {Tag}=require('./blog_tag')
 
 
 const  moment  = require('moment')
 class Post extends Model{
 
   static async getPostList(start, count) {
+    let postIds=[]
+    let posts=[]
     const postCount = await Post.findAll({
       attributes: [[Sequelize.fn('COUNT', '*'), 'count']],
     })
+
     const postList = await Post.findAll({
       offset: start,
       limit: count,
@@ -18,8 +22,15 @@ class Post extends Model{
         ['created_at', 'DESC']
       ],
       include:[
-
-      ]
+        {
+          model:global.db.Tag,
+          as:'tag',
+        },
+        {
+          model:global.db.Category,
+          as:'category'
+        }
+      ],
     })
     return {
       postList,
@@ -87,13 +98,7 @@ Post.init({
   sequelize,
     tableName: 'tb_blog_post',
 })
-Post.belongsTo(Category,{
-  foreignKey:"category_id"
-})
-Post.hasMany(PostTag,{
-  as:"flag",
-  foreignKey:'post_id'
-})
+
 
 module.exports={
   Post
