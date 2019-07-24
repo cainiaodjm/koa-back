@@ -35,6 +35,7 @@ class InitManager{
     const {Tag}=require('../app/models/blog_tag')
     const {PostTag}=require('../app/models/blog_post_tag')
     const {Category}=require('../app/models/blog_category')
+    const {Comment}=require('../app/models/blog/comment')
     Post.belongsToMany(Tag,{
       as:"tag",
       through:{
@@ -42,6 +43,11 @@ class InitManager{
       },
       constraints:false,
       foreignKey:'post_id'
+    })
+    Post.hasMany(Comment,{
+      foreignKey:"post_id",
+      as:"comment",
+      constraints:false
     })
     Post.belongsTo(Category,{
       foreignKey:"category_id",
@@ -59,6 +65,7 @@ class InitManager{
     db.Tag=Tag
     db.PostTag=PostTag
     db.Category=Category
+    db.Comment=Comment
     global.db=db
   }
 }
