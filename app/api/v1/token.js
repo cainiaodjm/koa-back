@@ -24,17 +24,17 @@ router.post('/v1/authorization', async (ctx, next) => {
     throw new Success("token已失效",10007,false)
   }
   ctx.body = {
-    "flag": true, 
+    "flag": true,
     "err_code": 0,
-     "err_msg": "验证成功", 
-     "at_time": "2018-10-20 19:09:51", 
-     "result": { 
-       "id": "1006", 
-     "account": "tony@qq.com", 
-     "nickname": "tony@qq.com", 
-     "email": "tony@qq.com", 
+     "err_msg": "验证成功",
+     "at_time": "2018-10-20 19:09:51",
+     "result": {
+       "id": "1006",
+     "account": "tony@qq.com",
+     "nickname": "tony@qq.com",
+     "email": "tony@qq.com",
       "token":token,
-     "page_list": { "home": true, "home_page": true, "grid_page": true, "i_button_page": true, "form_page": true, "slide_render": true, "folder_tree_page": true, "form": true, "form_dynamic": true, "tables": true, "count_to": true, "hover_me": true, "page_1": true, "about": true, "render_page": true, "argu": true, "parent": true, "child": true, "split_pane": true, "name_view": true, "upload": true, "main": true, "store": true }, "component_list": [] }
+     "page_list": { "home" : true, "home_page": true, "grid_page": true, "i_button_page": true, "form_page": true, "slide_render": true, "folder_tree_page": true, "form": true, "form_dynamic": true, "tables": true, "count_to": true, "hover_me": true, "page_1": true, "about": true, "render_page": true, "argu": true, "parent": true, "child": true, "split_pane": true, "name_view": true, "upload": true, "main": true, "store": true }, "component_list": [] }
   }
 })
 router.post('/v1/token', async (ctx, next) => {
@@ -54,7 +54,6 @@ router.post('/v1/token', async (ctx, next) => {
   throw new Success("success", 0, {
     token
   })
-
 })
 async function emialLogin(account, secret) {
   //调用模型类

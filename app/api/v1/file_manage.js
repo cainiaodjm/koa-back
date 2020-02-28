@@ -59,6 +59,7 @@ function _saveFile(ctx) {
 router.post('/delete_file', async (ctx, next) => {
 
 })
+router.post('9')
 router.get('/get_file',async (ctx,next)=>{
   const v= await new GetFileValidator().validate(ctx)
   const key=v.get('query.key')

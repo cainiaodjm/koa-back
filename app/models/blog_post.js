@@ -29,7 +29,11 @@ class Post extends Model{
         {
           model:global.db.Category,
           as:'category'
-        }
+        },
+        // {
+        //   model:global.db.Comment,
+        //   as:"comment"
+        // }
       ],
     })
     return {
