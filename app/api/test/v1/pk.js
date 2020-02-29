@@ -1,7 +1,10 @@
 const Router = require('koa-router')
 const axios = require('axios')
 const _ = require('lodash')
-const { Success, NotFound } = require('../../../../core/http-exception')
+const {
+    Success,
+    NotFound
+} = require('../../../../core/http-exception')
 const router = new Router({
     prefix: '/v1/test/pk'
 })
@@ -13,12 +16,52 @@ router.get('/list', async (ctx, next) => {
     throw new Success('查询成功', 0, data)
 
 })
+router.get('/nine_list', async (ctx, next) => {
+    const res = await axios.get(URL)
+    let data = res.data.result.data
+    let analyzeData = []
+    let cloneData = _.cloneDeep(data).slice(0, 30)
+    for (let i = 0; i < cloneData.length; i++) {
+        //取出每行一号位的数字
+        let number = cloneData[i].preDrawCode.split(",")[0]
+        analyzeData.push(number)
+    }
+    let rs = returnTenArray(analyzeData)
+    //进行结果排序 排序之后再按照上位去分析
+    let code = cloneData[0].preDrawCode.split(",")[0]
+    
+    throw new Success('查询成功', 0, rs)
+
+})
+const returnTenArray = (data) => {
+    let _data = {
+        "01": 0,
+        "02": 0,
+        "03": 0,
+        "04": 0,
+        "05": 0,
+        "06": 0,
+        "07": 0,
+        "08": 0,
+        "09": 0,
+        "10": 0
+    }
+    let keyArray = Object.keys(_data)
+    for(let i=0;i<data.length;i++){
+        for(let j=0;j<keyArray.length;j++){
+            console.log(data[i],keyArray[j])
+            if(data[i] === keyArray[j]){
+                _data[keyArray[j]]++
+            }
+        }
+    }
+    return _data
+}
 router.get('/nine', async (ctx, next) => {
     const res = await axios.get(URL)
     let data = res.data.result.data
     let analyzeData = []
     let cloneData = _.cloneDeep(data).slice(0, 30)
-    console.log(cloneData)
     //暂时取30条作为分析对象
     for (let i = 0; i < 6; i++) {
         analyzeData.push(data[i])
@@ -27,13 +70,15 @@ router.get('/nine', async (ctx, next) => {
     // let rs = getLineNumber(analyzeData, 0)
 
     let rsArray = []
-    for (let j = 0; j < 10; j++) {
-        let _rs = getLineNumber(analyzeData, j, cloneData)
-        _rs.pos = j
-        rsArray.push(_rs)
-    }
-    // let _rs = getLineNumber(analyzeData, 0, cloneData)
-    // rsArray.push(_rs)
+    let rule = 2
+    // for (let j = 0; j < 10; j++) {
+    //     let _rs = getLineNumber(data, j, cloneData, rule)
+    //     _rs.pos = j
+    //     rsArray.push(_rs)
+    // }
+    let _rs = getLineNumber(data, 0, cloneData, rule)
+    _rs.pos = 0
+    rsArray.push(_rs)
     /**
      * 需要对前30条进行分析 对每个取出的号码 进行筛选 看那个号码上面是否与30条
      * 数据重合
@@ -41,17 +86,18 @@ router.get('/nine', async (ctx, next) => {
 
     throw new Success('查询成功', 0, rsArray)
 })
-const getLineNumber = (data, line, moldeArray) => {
-
+const getLineNumber = (data, line, moldeArray, rule) => {
+    let _data = _.cloneDeep(data).slice(0, rule + 4)
+    console.log(_data.length)
     let lineArray = []
     let currentLine = null
     let killCode = null
-    for (let i = 0; i < data.length; i++) {
-        let codeArray = data[i].preDrawCode.split(',')
+    for (let i = 0; i < _data.length; i++) {
+        let codeArray = _data[i].preDrawCode.split(',')
         let currentCode = codeArray[line]
         lineArray.push(currentCode)
     }
-    let c = data[data.length - 2].preDrawCode.split(",")[line]
+    let c = _data[_data.length - rule].preDrawCode.split(",")[line]
     let endArray = getAllLineEndNumber(data)
     for (let j = 0; j < endArray.length; j++) {
         if (c == parseInt(endArray[j])) {
@@ -59,7 +105,7 @@ const getLineNumber = (data, line, moldeArray) => {
             currentLine = j
         }
     }
-    killCode = getRowNumber(data, data.length - 2)[currentLine]
+    killCode = getRowNumber(_data, _data.length - rule)[currentLine]
     let count = _analyzeData(moldeArray, killCode, currentLine, line)
     return {
         killCode,
