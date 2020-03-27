@@ -26,6 +26,7 @@ router.get('/a', async (ctx, next) => {
 });
 router.post('/auth/login', async (ctx, next) => {
   ctx.body = {
+    code:200,
     user: {
       id: 1,
       username: 'admin',
