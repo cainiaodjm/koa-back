@@ -5,7 +5,7 @@
   "main": "app.js",
   "dependencies": {
     "ali-oss": "^6.1.1",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "basic-auth": "^2.0.1",
     "bcryptjs": "^2.4.3",
     "formidable": "^1.2.1",
