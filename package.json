@@ -12,7 +12,7 @@
     "http": "0.0.0",
     "https": "^1.0.0",
     "jsonwebtoken": "^8.4.0",
-    "jspdf": "^1.5.3",
+    "jspdf": "^2.3.1",
     "koa": "^2.7.0",
     "koa-bodyparser": "^4.2.1",
     "koa-cors": "0.0.16",
